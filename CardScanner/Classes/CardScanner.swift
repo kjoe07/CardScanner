@@ -86,7 +86,7 @@ public class CardScanner: UIViewController {
         }
         title = viewTitle
 
-        let buttomItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(scanCompleted))
+        let buttomItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(self.close))
         buttomItem.tintColor = .white
         navigationItem.leftBarButtonItem = buttomItem
     }
@@ -272,10 +272,14 @@ public class CardScanner: UIViewController {
 
     // MARK: - Completed process
 
-    @objc func scanCompleted() {
-        resultsHandler(creditCardNumber, creditCardDate, creditCardCVV)
+    @objc func close() {
         stop()
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func scanCompleted() {
+        resultsHandler(creditCardNumber, creditCardDate, creditCardCVV)
+        close()
     }
 
     private func stop() {
