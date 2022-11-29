@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         
         // Add NSCameraUsageDescription to your Info.plist
         let scannerView = CardScanner.getScanner { card, date, cvv in
-            self.resultsLabel.text = "\(card) \(date) \(cvv)"
+            self.resultsLabel.text = "\(card ?? "") \(date ?? "") \(cvv ?? "")"
         }
         present(scannerView, animated: true, completion: nil)
     }
