@@ -49,19 +49,21 @@ public class CardScanner: UIViewController {
     let flashButton = UIButton(frame: .zero)
     var flashButtonVertical = [NSLayoutConstraint]()
     var flashButtonHorizontal = [NSLayoutConstraint]()
+    var color: UIColor
     // MARK: - Instance dependencies
 
     private var resultsHandler: (_ number: String?, _ date: String?, _ cvv: String?) -> Void?
 
     // MARK: - Initializers
 
-    init(resultsHandler: @escaping (_ number: String?, _ date: String?, _ cvv: String?) -> Void) {
+    init(color: UIColor, resultsHandler: @escaping (_ number: String?, _ date: String?, _ cvv: String?) -> Void) {
         self.resultsHandler = resultsHandler
+        self.color = color
         super.init(nibName: nil, bundle: nil)
     }
 
-    public class func getScanner(resultsHandler: @escaping (_ number: String?, _ date: String?, _ cvv: String?) -> Void) -> UINavigationController {
-        let viewScanner = CardScanner(resultsHandler: resultsHandler)
+    public class func getScanner(color: UIColor, resultsHandler: @escaping (_ number: String?, _ date: String?, _ cvv: String?) -> Void) -> UINavigationController {
+        let viewScanner = CardScanner(color: color, resultsHandler: resultsHandler)
         let navigation = UINavigationController(rootViewController: viewScanner)
         return navigation
     }
@@ -83,8 +85,11 @@ public class CardScanner: UIViewController {
         title = viewTitle
 //        view.translatesAutoresizingMaskIntoConstraints = false
         let buttomItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(self.close))
-        buttomItem.tintColor = .white
+        buttomItem.tintColor = color
         navigationItem.leftBarButtonItem = buttomItem
+        navigationController?.navigationBar.tintColor = color
+        let textAttributes = [NSAttributedString.Key.foregroundColor: color]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         labelCardNumber.translatesAutoresizingMaskIntoConstraints = false
         labelCardNumber.font = UIFont.systemFont(ofSize: 17, weight: .bold)
         labelCardNumber.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clearCardNumber)))
